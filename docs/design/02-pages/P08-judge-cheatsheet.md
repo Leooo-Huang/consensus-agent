@@ -77,7 +77,7 @@
 
 **功能映射(v2 加强)**:
 - 架构清晰分层(P 平台层 / W 场景层 解耦) → [跳 docs/design/]
-- 生产级技术栈(Next.js 15 + AI SDK v6 + LangGraph 0.4) → [GitHub 链接]
+- 生产级技术栈(Next.js 15 + AI SDK v5.0(`ai@5.0.0`) + LangGraph 0.4) → [GitHub 链接]
 - AI Gateway 解耦 Provider(2 行代码可换模型) → [跳 P07 降级链]
 - 强 Schema 约束(Zod + generateObject)+ **强制 citation 字段** → [代码片段]
 - **学术算法落地**:**TWS(自研轨迹加权评分) 共识评分**(基于辩论轨迹,非最后一票) → [跳 consensus-algorithm.md]

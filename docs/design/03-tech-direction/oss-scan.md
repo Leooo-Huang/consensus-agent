@@ -17,13 +17,13 @@
 
 | 名称 | Stars | 最近活跃 | License | 适配度 | 集成成本 | 链接 |
 | --- | --- | --- | --- | --- | --- | --- |
-| **Vercel AI SDK v6 `generateObject` + Zod** | 16k+ | 2026-Q2 | Apache-2.0 | **5/5** | low | [github.com/vercel/ai](https://github.com/vercel/ai) |
+| **Vercel AI SDK v5.0(`ai@5.0.0`) `generateObject` + Zod** | 16k+ | 2026-Q2 | Apache-2.0 | **5/5** | low | [github.com/vercel/ai](https://github.com/vercel/ai) |
 | Instructor(Python 主) | 11k+ | 活跃 | MIT | 4/5 | medium | [github.com/instructor-ai/instructor](https://github.com/instructor-ai/instructor) |
 | LangChain structured output | 100k+ | 活跃 | MIT | 4/5 | medium | LangChain |
 
 ### 推荐
 
-**优先选用:AI SDK v6 `generateObject` + Zod schema**。Next.js 原生集成、TS 生态、与 R7(AI Gateway)同栈零额外配置。
+**优先选用:AI SDK v5.0(`ai@5.0.0`) `generateObject` + Zod schema**。Next.js 原生集成、TS 生态、与 R7(AI Gateway)同栈零额外配置。
 
 ---
 
@@ -121,7 +121,7 @@
 
 ### 推荐
 
-**优先选用:Vercel AI Gateway + AI SDK v6 providerOptions**。
+**优先选用:Vercel AI Gateway + AI SDK v5.0(`ai@5.0.0`) providerOptions**。
 - 在 AI SDK 内 `providerOptions.gateway` 即可配 `order / only / sort` 实现自动 failover(2026-02-09 起官方支持)
 - string model ID(`"anthropic/claude-opus-4-7"`)直接走 Gateway,无额外集成
 - 与 R1/R3/R5/R8 同栈
@@ -197,7 +197,7 @@
 
 | R | 决策 | 主选方案 |
 | --- | --- | --- |
-| R1 解构 | 复用 | AI SDK v6 `generateObject` + Zod |
+| R1 解构 | 复用 | AI SDK v5.0(`ai@5.0.0`) `generateObject` + Zod |
 | R2 Persona | 自研 | Drizzle + Zod |
 | R3 多 Agent | **复用** | LangGraph.js 0.4 |
 | R4 可视化 | **复用** | Nivo HeatMap + Tremor |
@@ -217,7 +217,7 @@
 
 ```
 Frontend:  Next.js 15 App Router + Tailwind 4 + shadcn/ui + Nivo + Tremor + framer-motion
-Backend:   Next.js Route Handlers + LangGraph.js 0.4 + AI SDK v6 + AI Gateway + Drizzle ORM
+Backend:   Next.js Route Handlers + LangGraph.js 0.4 + AI SDK v5.0(`ai@5.0.0`) + AI Gateway + Drizzle ORM
 LLM:       Opus 4.7 → Sonnet 4.6 → Haiku 4.5 → 离线规则
 Evidence:  内置 fixture loader + **in-memory JSON + cosine(P0,< 200 条)** / **Neon pgvector(V2)**
 Consensus: 自研 lib/consensus(TWS(自研轨迹加权评分) + Blind First-Vote + Anchoring 检测 + 复现测试)
@@ -236,7 +236,7 @@ Deploy:    Vercel(Fluid Compute 默认 300s)
 
 | 名称 | Stars | 适配度 | 集成成本 | 链接 |
 | --- | --- | --- | --- | --- |
-| **AI SDK v6 + 自研轻量 retriever** | — | 5/5 | low | 与 R1/R7 同栈 |
+| **AI SDK v5.0(`ai@5.0.0`) + 自研轻量 retriever** | — | 5/5 | low | 与 R1/R7 同栈 |
 | LlamaIndex.TS | 2k+ | 4/5 | medium | llamaindex.ai |
 | LangChain Retriever | 同 R3 | 4/5 | medium | LangChain |
 | **in-memory JSON + cosine(P0)** | — | 5/5 (P0) | very low | 自研 ~50 行 |
@@ -290,7 +290,7 @@ Deploy:    Vercel(Fluid Compute 默认 300s)
 
 | R | 决策 | 主选方案 |
 | --- | --- | --- |
-| R1 解构 | 复用 | AI SDK v6 `generateObject` + Zod |
+| R1 解构 | 复用 | AI SDK v5.0(`ai@5.0.0`) `generateObject` + Zod |
 | R2 Persona | 自研 | Drizzle + Zod(v2 加 interest_boundary 字段) |
 | R3 多 Agent | **复用** | LangGraph.js 0.4 |
 | R4 可视化 | **复用** | Nivo HeatMap + Tremor |

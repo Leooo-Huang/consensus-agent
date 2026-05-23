@@ -29,6 +29,11 @@
 | 15 | `providerOptions.gateway.retry` | 0 | v2.3 GAN-B B-B-5:该字段不存在,重试用 AI SDK `maxRetries` |
 | 16 | `X-Accel-Buffering` | 0 | v2.3 GAN-B H-B-2:nginx 专用头,Vercel 无效 |
 | 17 | `\$75/M\|\$75 /M` 在 Opus 4.7 价格上下文 | 0 | v2.3 GAN-B H-B-4:Opus 4.7 真实价格 input $5/M, output **$25/M** |
+| 17a | `AI SDK v6\|"ai": "6` | 0(除历史 ideation/_raw-brainstorm 外) | v2.3 GAN-V3 Issue 1:P0 锁 `ai@5.0.0`(streamObject 可用);v6 已弃用 streamObject/generateObject |
+| 17b | `streamText.*Output\.object\|partialOutputStream` | 0 | v2.3 GAN-V3 Issue 1:v5 路径下用 `streamObject` + `partialObjectStream`,不引入 v6 新 API 避免混乱 |
+| 17c | `"drizzle-orm": "0\.[12][0-9]\." | 0 | v2.3 GAN-V3 Issue 5:锁 0.44.2 防 pgEnum #2753 bug;`drizzle-kit": "0\.2[0-9]\.` 同样禁(应 0.30.x+)|
+| 17d | `vercel\.ts\|@vercel/config` | 0 | v2.3 GAN-V3 修:`@vercel/config` 不是合法包;改用 `vercel.json` |
+| 17e | `graph\.updateState.*resume\|updateState.*approve` | 0 | v2.3 GAN-V3 Issue 2:HITL resume 必须 `graph.invoke(new Command({ resume }))`,updateState 不会触发图继续 |
 
 ### Schema 字段必填检查
 

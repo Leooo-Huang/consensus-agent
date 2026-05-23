@@ -7,7 +7,7 @@
 **最终选了**:**Vercel(Next.js + Fluid Compute)+ Neon Postgres(Marketplace 集成)+ Vercel AI Gateway**。
 
 **为什么**:
-- 项目栈 100% Vercel 原生(Next.js 15 + AI SDK v6 + AI Gateway)→ 零额外配置
+- 项目栈 100% Vercel 原生(Next.js 15 + AI SDK v5.0(`ai@5.0.0`) + AI Gateway)→ 零额外配置
 - Fluid Compute 默认 300s timeout,覆盖最长链推理
 - Neon 在 Vercel Marketplace 一键集成,提供 serverless Postgres,无需自管 DB 实例
 - Demo 时全云端,演讲者只需打开浏览器,**无本地启动依赖**

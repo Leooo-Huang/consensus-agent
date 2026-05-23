@@ -31,7 +31,7 @@
 2. **AI 层**:Haiku 4.5 zero-shot 兜底检测正则没捕到的敏感词
 3. **LLM 调用层**:Vercel AI Gateway 配 `providerOptions.gateway.zeroDataRetention=true` → 强制 ZDR(仅路由到与 Vercel 有 ZDR 协议的 Provider,Anthropic / OpenAI / Google 已支持)
    - **官方文档**:[Vercel ZDR on AI Gateway](https://vercel.com/docs/ai-gateway/capabilities/zdr)、[Disallow Prompt Training](https://vercel.com/docs/ai-gateway/capabilities/disallow-prompt-training)
-   - **变更说明(v2.1 GAN-B 修)**:原文档误写为 `allowProviderRetention=false`,实际 Vercel AI SDK v6 API 是 `zeroDataRetention: true`(2026-04 起 GA)。可同时配 `disallowPromptTraining: true` 防止提案被 Provider 用于训练
+   - **变更说明(v2.1 GAN-B 修)**:原文档误写为 `allowProviderRetention=false`,实际 Vercel AI SDK v5.0(`ai@5.0.0`) API 是 `zeroDataRetention: true`(2026-04 起 GA)。可同时配 `disallowPromptTraining: true` 防止提案被 Provider 用于训练
    - **Team 级 vs 请求级**:可在 AI Gateway Dashboard Settings 全局开启 ZDR,所有请求自动路由 ZDR 兼容 Provider;也可按请求级 `providerOptions` 控制
 
 ### 占位符语义

@@ -43,7 +43,7 @@
 │   │   /api/evidence/* / /api/audit-logs / /api/hitl/* / ...    │    │
 │   └────────────────────────────────────────────────────────────┘    │
 │        ↓                                                             │
-│   lib/llm/gateway.ts(集中 AI SDK v6 + Gateway 配置 + ZDR + fallback)│
+│   lib/llm/gateway.ts(集中 AI SDK v5.0(`ai@5.0.0`,保留 streamObject;v6 已弃用待 V2 迁移) + Gateway 配置 + ZDR + fallback)│
 │   lib/evidence/retriever.ts(in-memory cosine,P0)                    │
 │   lib/consensus/*.ts(TWS / Anchoring / weight)                      │
 │   lib/methodology/*.ts(L1-L4 + Premortem + AAR templates)           │

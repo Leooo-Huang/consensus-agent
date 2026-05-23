@@ -6,7 +6,7 @@
 >
 > 重要程度:**P0 必须做**
 > 谁会用:提案人(等待中)/ 路演者(关键演示页之一)
-> 用什么实现:AI SDK v6 `streamObject` + Server-Sent Events + framer-motion 步骤动画
+> 用什么实现:AI SDK v5.0(`ai@5.0.0`) `streamObject` + Server-Sent Events + framer-motion 步骤动画
 
 ## 这一页里有什么(v2)
 
