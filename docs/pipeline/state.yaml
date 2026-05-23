@@ -1,7 +1,15 @@
 topic: "企业AI黑客松-协作沟通Agent"
 topic_slug: "collab-agent"
-status: running
-current_phase: 5
+status: running_sleep_mode
+current_phase: 6
+sleep_mode:
+  active: true
+  started_at: "2026-05-23T07:05:00+08:00"
+  user_blockers_file: "docs/pipeline/user-blockers.md"
+  auto_runnable_tasks: ["P0.1", "P2.1", "P3.1", "P3.2", "P3.3-unit", "P4.0", "P4.1-9-code", "P4.10", "P4.11", "P6.0"]
+  env_blocked_tasks: ["P0.3", "P0.4", "P0.5-redis", "P1.1-migrate", "P1.2-seed", "P1.3-setup", "P4.spike", "P5.*", "P6.B-E2E", "P7.*", "P8.*"]
+  max_iterations: 30
+  reason: "三个关键 env vars 未配 + 项目脚手架未建 — sleep 自动跑 env 无关 task,卡 env 时生成 handoff 等用户"
 paused_reason: null
 paused_at_gate: null
 started_at: "2026-05-23T00:00:00+08:00"
@@ -11,8 +19,8 @@ phases:
   2: { name: product-spec, status: completed, started_at: "2026-05-23T00:30:00+08:00", completed_at: "2026-05-23T01:30:00+08:00", output: "docs/design/", error: null, retries: 0 }
   3: { name: ui-ux, status: completed, started_at: "2026-05-23T01:30:00+08:00", completed_at: "2026-05-23T02:00:00+08:00", output: "docs/plans/2026-05-23-collab-agent-ui.md", error: null, retries: 0 }
   4: { name: api, status: completed, started_at: "2026-05-23T03:00:00+08:00", completed_at: "2026-05-23T05:30:00+08:00", output: "docs/plans/2026-05-23-collab-agent-api.md", error: null, retries: 0, gan_rounds: 1, gan_fixes_applied: 25 }
-  5: { name: planning, status: in_progress, started_at: "2026-05-23T05:30:00+08:00", completed_at: null, output: null, error: null, retries: 0 }
-  6: { name: development, status: pending, started_at: null, completed_at: null, output: null, error: null, retries: 0 }
+  5: { name: planning, status: completed, started_at: "2026-05-23T05:30:00+08:00", completed_at: "2026-05-23T07:00:00+08:00", output: "docs/plans/2026-05-23-collab-agent-{plan,index,rules}.md", error: null, retries: 0, plan_review: { verdict: "needs_improvement_then_pass", scores: { coverage: 7.5, tech: 6.5, executability: 7.0, risk: 7.0 }, iterations: 2, post_v4_fixes: ["R1-vercel.json", "R2-L1WarningDialog skeleton"] } }
+  6: { name: development, status: in_progress, started_at: "2026-05-23T07:00:00+08:00", completed_at: null, output: null, error: null, retries: 0, user_blockers: "docs/pipeline/user-blockers.md" }
   7: { name: verification, status: pending, started_at: null, completed_at: null, output: null, error: null, retries: 0 }
   8: { name: delivery, status: pending, started_at: null, completed_at: null, output: null, error: null, retries: 0 }
 gate_history: []

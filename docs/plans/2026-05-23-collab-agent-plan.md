@@ -26,8 +26,10 @@
 
 ## File Structure
 
+> **v2.3 GAN-V4 修**:代码建在仓库根 `d:/Dev/Projects/Personal/MeetingAI/`(与 `docs/` 同级),**不**用 `yijian/` 子目录。
+
 ```
-yijian/
+.(repo root)
 ├── app/
 │   ├── (app)/                      # 12 页 UI + 布局
 │   │   ├── layout.tsx
@@ -190,10 +192,12 @@ yijian/
 
 - [ ] **Step 1: 初始化 Next.js 15(脚本式,不用 create-next-app 防被网络拖死)**
 
+> **v2.3 GAN-V4 修**:原 plan 用 `mkdir -p yijian && cd yijian` 创建子目录,但本仓库已经在 `d:/Dev/Projects/Personal/MeetingAI/` 初始化为 git repo(commit b33c03c)。**改为在仓库根直接执行**(git/.gitignore 已存):
+
 ```bash
-mkdir -p yijian && cd yijian
-git init && echo "node_modules\n.next\n.vercel\n.env*\n!.env.example\nplaywright-report\ntest-results" > .gitignore
-pnpm init
+# 已在仓库根,无需 cd
+pnpm init -y
+# .gitignore 已存(覆盖 node_modules / .next / .vercel / .env / *.docx 等)
 ```
 
 - [ ] **Step 2: 写入 package.json(覆盖)+ tsconfig.json + next.config.ts**
