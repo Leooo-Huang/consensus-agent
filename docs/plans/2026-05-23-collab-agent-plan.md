@@ -117,7 +117,7 @@
 │   └── draft/
 │       └── local-storage.ts        # P02 草稿(纯前端)
 ├── middleware.ts                   # Upstash 限流 + 内存兜底
-├── vercel.json                     # maxDuration 显式锁定(GAN-V3 修:不用 vercel.ts,@vercel/config 包不存在)
+├── vercel.ts                       # Vercel 2026 官方推荐配置(@vercel/config);maxDuration 在各 route.ts 顶部声明
 ├── drizzle.config.ts
 ├── playwright.config.ts
 ├── vitest.config.ts
@@ -168,8 +168,8 @@
     "@radix-ui/react-tabs": "1.1.1",
     "@radix-ui/react-drawer": "1.1.0",
     "@radix-ui/react-tooltip": "1.1.4",
-    "tailwindcss": "4.0.0",
-    "@tailwindcss/postcss": "4.0.0",
+    "tailwindcss": "4.3.0",
+    "@tailwindcss/postcss": "4.3.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "tailwind-merge": "2.5.4"
@@ -321,7 +321,7 @@ git commit -m "feat(P0.1): scaffold Next.js 15 + Tailwind 4 + locked deps
 ### Task P0.2: Vercel + 环境变量 + maxDuration 锁定
 
 **Files:**
-- Create: `.env.example`, `vercel.json`, `scripts/check-env.ts`
+- Create: `.env.example`, `vercel.ts`, `scripts/check-env.ts`,各长任务 route.ts 的 `export const maxDuration`
 
 - [ ] **Step 1: 写 `.env.example`(所有 env 变量声明 + 注释)**
 
@@ -342,29 +342,37 @@ DEMO_TEAM_CODE=                   # 留空=匿名公开;设值=要求 ?team_code
 SENTRY_DSN=                       # 可选,空则 console.error
 ```
 
-- [ ] **Step 2: 写 `vercel.json`(显式锁定 maxDuration,防 Vercel 默认值变化)**
+- [ ] **Step 2: 写 `vercel.ts`(Vercel 2026 官方推荐配置方式,`@vercel/config`)**
 
-> **v2.3 GAN-V3 修**:原方案用 `vercel.ts` + `import type { VercelConfig } from "@vercel/config/v1"`,但 `@vercel/config` 不是合法 npm 包,会 TypeScript 报错。**改用 `vercel.json`**(Vercel 原生支持,无需 TS 类型)。
-> **pnpm 锁文件注意**:`installCommand: "pnpm install --frozen-lockfile"` 仅在 `pnpm-lock.yaml` 与 `package.json` 完全一致时通过。**P0.1 必须 commit lockfile,黑客松期间临时改依赖必须本地 pnpm install 后重新 commit lockfile,否则 Vercel 部署失败**。
+> **v2.3 GAN-V4 修(回滚 GAN-V3 R1)**:Vercel 官方知识更新(2026-02-27)确认 **`vercel.ts` + `@vercel/config` 是当前推荐配置方式**,替代 `vercel.json`,支持 TypeScript 类型 + 动态逻辑 + env 访问。GAN-V3 reviewer 的 WebSearch 误判"`@vercel/config` 不存在",已纠正。官方文档:https://vercel.com/docs/project-configuration/vercel-ts
+> **maxDuration 策略**:`@vercel/config` 的 `VercelConfig` 配 framework/buildCommand/crons;**每端点的 maxDuration 用 Next.js App Router 原生 `export const maxDuration = 300`**(写在各 route.ts 顶部,最稳)。
+> **pnpm 锁文件注意**:`pnpm install --frozen-lockfile` 仅在 `pnpm-lock.yaml` 与 `package.json` 一致时通过。**P0.1 必须 commit lockfile**,黑客松期间临时改依赖须本地 `pnpm install` 后重新 commit lockfile。
 
-`vercel.json`:
-```json
-{
-  "framework": "nextjs",
-  "buildCommand": "pnpm build",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "functions": {
-    "app/api/analyze/route.ts": { "maxDuration": 300 },
-    "app/api/reproducibility-check/route.ts": { "maxDuration": 300 },
-    "app/api/analysis-versions/[id]/prompts/ab-compare/route.ts": { "maxDuration": 60 },
-    "app/api/evidence/search/route.ts": { "maxDuration": 30 },
-    "app/api/proposals/route.ts": { "maxDuration": 30 },
-    "app/api/decisions/route.ts": { "maxDuration": 30 }
-  }
-}
+`vercel.ts`:
+```ts
+import { type VercelConfig } from "@vercel/config/v1";
+
+export const config: VercelConfig = {
+  framework: "nextjs",
+  buildCommand: "pnpm build",
+  installCommand: "pnpm install --frozen-lockfile",
+};
+
+export default config;
 ```
 
-> **Vercel Fluid Compute 注**:2025-06 起 maxDuration 默认 300s,本配置仍显式声明是为"锁定值防 Vercel 后续默认改变";Pro/Enterprise 可延长到 800s。
+各长任务端点 route.ts 顶部声明 maxDuration(App Router 原生,Vercel 读取):
+```ts
+// app/api/analyze/route.ts(及 reproducibility-check)
+export const maxDuration = 300;   // Fluid Compute 默认已 300s,显式锁定防默认值变化
+export const runtime = "nodejs";  // 非 edge(LangGraph/PostgresSaver 需 Node)
+
+// app/api/analysis-versions/[id]/prompts/ab-compare/route.ts
+export const maxDuration = 60;
+
+// app/api/evidence/search、proposals、decisions/route.ts
+export const maxDuration = 30;
+```
 
 - [ ] **Step 3: 写 `scripts/check-env.ts`(启动前自检,防忘配 env)**
 
@@ -413,10 +421,11 @@ pnpm vercel env pull .env.local
 - [ ] **Step 6: Commit**
 
 ```bash
-git add .env.example vercel.json scripts/check-env.ts package.json
-git commit -m "feat(P0.2): Vercel config + env baseline + maxDuration lock
+git add .env.example vercel.ts scripts/check-env.ts package.json
+git commit -m "feat(P0.2): Vercel config (vercel.ts + @vercel/config) + env baseline
 
-- vercel.json 显式声明 6 个 SSE/长任务端点 maxDuration(GAN-V3 修:不用 vercel.ts)
+- vercel.ts(Vercel 2026 官方推荐,GAN-V4 回滚 R1)
+- maxDuration 在各 route.ts 顶部 export const(App Router 原生)
 - predev/prebuild hook 校验 5 个必需 env(防忘配)
 - Upstash Redis env vars(取代 @vercel/kv,GAN-B B-B-3)
 "
@@ -424,7 +433,7 @@ git commit -m "feat(P0.2): Vercel config + env baseline + maxDuration lock
 
 **acceptance_criteria:**
 - `pnpm tsx scripts/check-env.ts` 在缺失 env 时退出码 1,完整时退出码 0
-- `vercel.json` 含至少 6 个端点的 maxDuration 显式声明
+- `vercel.ts` 用 `@vercel/config` 配 framework/build;6 个长任务端点 route.ts 含 `export const maxDuration`
 - 红线 #12 扫描(`@vercel/kv|@vercel/ratelimit`):0 命中
 
 **status:** pending

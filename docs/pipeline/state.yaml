@@ -1,15 +1,14 @@
 topic: "企业AI黑客松-协作沟通Agent"
 topic_slug: "collab-agent"
-status: running_sleep_mode
+status: running
 current_phase: 6
-sleep_mode:
-  active: true
-  started_at: "2026-05-23T07:05:00+08:00"
-  user_blockers_file: "docs/pipeline/user-blockers.md"
-  auto_runnable_tasks: ["P0.1", "P2.1", "P3.1", "P3.2", "P3.3-unit", "P4.0", "P4.1-9-code", "P4.10", "P4.11", "P6.0"]
-  env_blocked_tasks: ["P0.3", "P0.4", "P0.5-redis", "P1.1-migrate", "P1.2-seed", "P1.3-setup", "P4.spike", "P5.*", "P6.B-E2E", "P7.*", "P8.*"]
-  max_iterations: 30
-  reason: "三个关键 env vars 未配 + 项目脚手架未建 — sleep 自动跑 env 无关 task,卡 env 时生成 handoff 等用户"
+dev_mode: "normal (subagent-driven-development, sleep 已退出 — 用户要求严格 /autodev 正常模式)"
+phase6_progress:
+  completed_tasks: ["P0.1"]
+  in_progress: "P0.2"
+  user_blockers_file: "docs/pipeline/user-blockers.md (用户确认会配 env)"
+  vercel_decision: "vercel.ts + @vercel/config@0.5.0(已验证 npm 存在 + /v1 子路径可解析;GAN-V3 R1 已回滚)"
+  notable_fixes: ["tailwind 4.0.0→4.3.0(4.0.0 首发 scanner bug)", "@vercel/config 加入 devDeps"]
 paused_reason: null
 paused_at_gate: null
 started_at: "2026-05-23T00:00:00+08:00"
