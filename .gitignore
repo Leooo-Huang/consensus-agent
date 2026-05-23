@@ -1,0 +1,46 @@
+# 原始讨论材料(私人,不上传 GitHub Public)
+原文_*.docx
+*.docx
+
+# Node / Next.js(Phase 6 开发期产生)
+node_modules/
+.next/
+.vercel/
+out/
+build/
+dist/
+
+# 环境变量(只 commit .env.example)
+.env
+.env.local
+.env.*.local
+
+# 包管理器
+.pnpm-store/
+
+# 测试 / Playwright
+playwright-report/
+test-results/
+coverage/
+.nyc_output/
+
+# IDE / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# 日志
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Vercel CLI 临时
+.vercel/
+
+# TypeScript 构建增量
+*.tsbuildinfo
+next-env.d.ts

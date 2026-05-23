@@ -1,0 +1,35 @@
+# AutoDev 流水线配置 — 企业 AI Agent 黑客松（方向 B 协作沟通 Agent）
+# 比赛场景：演示导向 + 评审打分驱动。门控全关，便于一气呵成迭代。
+
+pipeline:
+  mode: auto
+
+gates: {}
+
+sleep_mode: false
+
+ralph_loop:
+  max_iterations: 50
+  completion_promise: "AUTODEV PIPELINE COMPLETE"
+
+phases:
+  ideation:
+    max_iterations: 3
+  ui_ux:
+    include_wireframes: true
+  api:
+    include_schemas: true
+  planning:
+    execution_style: auto
+  development:
+    use_worktree: false
+    branch_pattern: "autodev/{topic-slug}"
+  frontend:
+    stack: "nextjs"
+    ui_library: "shadcn"
+    css: "tailwind"
+  delivery:
+    default_action: ask
+
+deployment:
+  auto_deploy: false  # 比赛环境，默认本地演示

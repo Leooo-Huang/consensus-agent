@@ -1,0 +1,18 @@
+topic: "企业AI黑客松-协作沟通Agent"
+topic_slug: "collab-agent"
+status: running
+current_phase: 5
+paused_reason: null
+paused_at_gate: null
+started_at: "2026-05-23T00:00:00+08:00"
+completed_at: null
+phases:
+  1: { name: ideation, status: completed, started_at: "2026-05-23T00:00:00+08:00", completed_at: "2026-05-23T00:30:00+08:00", output: "docs/plans/2026-05-23-collab-agent-ideation.md", error: null, retries: 0 }
+  2: { name: product-spec, status: completed, started_at: "2026-05-23T00:30:00+08:00", completed_at: "2026-05-23T01:30:00+08:00", output: "docs/design/", error: null, retries: 0 }
+  3: { name: ui-ux, status: completed, started_at: "2026-05-23T01:30:00+08:00", completed_at: "2026-05-23T02:00:00+08:00", output: "docs/plans/2026-05-23-collab-agent-ui.md", error: null, retries: 0 }
+  4: { name: api, status: completed, started_at: "2026-05-23T03:00:00+08:00", completed_at: "2026-05-23T05:30:00+08:00", output: "docs/plans/2026-05-23-collab-agent-api.md", error: null, retries: 0, gan_rounds: 1, gan_fixes_applied: 25 }
+  5: { name: planning, status: in_progress, started_at: "2026-05-23T05:30:00+08:00", completed_at: null, output: null, error: null, retries: 0 }
+  6: { name: development, status: pending, started_at: null, completed_at: null, output: null, error: null, retries: 0 }
+  7: { name: verification, status: pending, started_at: null, completed_at: null, output: null, error: null, retries: 0 }
+  8: { name: delivery, status: pending, started_at: null, completed_at: null, output: null, error: null, retries: 0 }
+gate_history: []

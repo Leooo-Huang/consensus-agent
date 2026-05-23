@@ -1,0 +1,53 @@
+# 由 autodev step 1.4 于 2026-05-23 生成
+# 任何"因为没有 X 而延期 Y"的决策必须引用本文件中的对应行
+
+probed_at: "2026-05-23T00:00:00+08:00"
+platform: "win32"
+
+tools:
+  node:
+    available: true
+    version: "v24.13.0"
+    evidence: "node --version → v24.13.0"
+  npm:
+    available: true
+    version: "11.6.2"
+    evidence: "npm --version → 11.6.2"
+  pnpm:
+    available: true
+    version: "10.30.3"
+    evidence: "pnpm --version → 10.30.3"
+  bun:
+    available: true
+    version: "1.3.11"
+    evidence: "bun --version → 1.3.11"
+  python:
+    available: false
+    evidence: "python --version → not found (PATH 中未找到)"
+    note: "uv 可用，需要时通过 uv 管理 Python 环境"
+  uv:
+    available: true
+    version: "0.11.7"
+    evidence: "uv --version → uv 0.11.7"
+  git:
+    available: true
+    version: "2.52.0.windows.1"
+    in_git_repo: false
+    evidence: "git rev-parse exit 128 'not a git repository'"
+    note: "需要先 git init 才能用 worktree/分支"
+  psql:
+    available: false
+    evidence: "Get-Command psql 无输出"
+    note: "如需 Postgres 可走 Neon/Supabase 等托管方案，无需本地 psql"
+  docker:
+    available: true
+    version: "29.2.1"
+    evidence: "docker --version → 29.2.1"
+  vercel_cli:
+    available: true
+    version: "50.35.0"
+    evidence: "vercel --version → 50.35.0"
+  gh_cli:
+    available: true
+    version: "2.87.0"
+    evidence: "gh --version → 2.87.0"
