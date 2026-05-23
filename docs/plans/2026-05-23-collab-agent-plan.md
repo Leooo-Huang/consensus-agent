@@ -115,7 +115,7 @@ yijian/
 │   └── draft/
 │       └── local-storage.ts        # P02 草稿(纯前端)
 ├── middleware.ts                   # Upstash 限流 + 内存兜底
-├── vercel.ts                       # maxDuration 显式锁定
+├── vercel.json                     # maxDuration 显式锁定(GAN-V3 修:不用 vercel.ts,@vercel/config 包不存在)
 ├── drizzle.config.ts
 ├── playwright.config.ts
 ├── vitest.config.ts
@@ -317,7 +317,7 @@ git commit -m "feat(P0.1): scaffold Next.js 15 + Tailwind 4 + locked deps
 ### Task P0.2: Vercel + 环境变量 + maxDuration 锁定
 
 **Files:**
-- Create: `.env.example`, `vercel.ts`, `scripts/check-env.ts`
+- Create: `.env.example`, `vercel.json`, `scripts/check-env.ts`
 
 - [ ] **Step 1: 写 `.env.example`(所有 env 变量声明 + 注释)**
 
@@ -409,10 +409,10 @@ pnpm vercel env pull .env.local
 - [ ] **Step 6: Commit**
 
 ```bash
-git add .env.example vercel.ts scripts/check-env.ts package.json
+git add .env.example vercel.json scripts/check-env.ts package.json
 git commit -m "feat(P0.2): Vercel config + env baseline + maxDuration lock
 
-- vercel.ts 显式声明 6 个 SSE/长任务端点 maxDuration
+- vercel.json 显式声明 6 个 SSE/长任务端点 maxDuration(GAN-V3 修:不用 vercel.ts)
 - predev/prebuild hook 校验 5 个必需 env(防忘配)
 - Upstash Redis env vars(取代 @vercel/kv,GAN-B B-B-3)
 "
@@ -420,7 +420,7 @@ git commit -m "feat(P0.2): Vercel config + env baseline + maxDuration lock
 
 **acceptance_criteria:**
 - `pnpm tsx scripts/check-env.ts` 在缺失 env 时退出码 1,完整时退出码 0
-- `vercel.ts` 含至少 6 个端点的 maxDuration 显式声明
+- `vercel.json` 含至少 6 个端点的 maxDuration 显式声明
 - 红线 #12 扫描(`@vercel/kv|@vercel/ratelimit`):0 命中
 
 **status:** pending
@@ -4744,7 +4744,57 @@ export function HitlDialog({ pending, avId }: { pending: { checkpoint_id: string
 }
 ```
 
-`L1WarningDialog.tsx`(alignment_score < 0.5 弹):结构同 HitlDialog,只是文案改"该提案可能偏离声明目标(对齐度 X),是否继续?"
+`components/feature/analysis/L1WarningDialog.tsx`(alignment_score < 0.5 弹):
+
+```tsx
+"use client";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { AlertTriangle } from "lucide-react";
+
+export interface L1Warning {
+  alignment_score: number;          // 0-100 整数(从 av.l1_alignment_score 来)
+  message: string;                  // 来自 SSE l1:warning 事件 data.message
+}
+
+export function L1WarningDialog({
+  warning, onContinue, onCancel,
+}: {
+  warning: L1Warning;
+  onContinue: () => void;
+  onCancel: () => void;
+}) {
+  const pct = `${warning.alignment_score}%`;
+  return (
+    <Dialog open onOpenChange={(open) => { if (!open) onCancel(); }}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <AlertTriangle size={18} className="text-[hsl(38_92%_50%)]" aria-hidden />
+            L1 目标对齐警告
+          </DialogTitle>
+          <DialogDescription>
+            该提案与声明的公司目标对齐度仅 <strong>{pct}</strong>(低于 50% 阈值)。
+            {warning.message ? <span className="block mt-2 text-sm">{warning.message}</span> : null}
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="gap-2">
+          <Button variant="outline" onClick={onCancel}>返回修改提案</Button>
+          <Button onClick={onContinue}>仍要继续推理</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+**page.tsx 调用同步**(保证 L1Warning 类型一致):
+```tsx
+import type { L1Warning } from "@/components/feature/analysis/L1WarningDialog";
+// useAnalysisStream 返回的 state.l1Warning 类型也用 L1Warning(在 hooks 内 import)
+```
+
+`hooks/useAnalysisStream.ts` State 接口 `l1Warning?: L1Warning;`(替换原 `any` 类型)
 
 - [ ] **Step 3: E2E + commit**
 
