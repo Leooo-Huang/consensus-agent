@@ -4,11 +4,16 @@ status: running
 current_phase: 6
 dev_mode: "normal (subagent-driven-development, sleep 已退出 — 用户要求严格 /autodev 正常模式)"
 phase6_progress:
-  completed_tasks: ["P0.1"]
-  in_progress: "P0.2"
+  completed_tasks: ["P0.1", "P0.2", "P2.1", "P1.1", "P3.1", "P3.2", "P3.3"]
+  total_tests_passing: 75
+  next_env_free_tasks: ["lib/db lazy-init 修", "P4.0", "P4.1-9", "P4.10", "P4.11", "P0.5", "P6.0", "P7.2"]
+  progress_file: "docs/pipeline/dev-progress.md"
   user_blockers_file: "docs/pipeline/user-blockers.md (用户确认会配 env)"
   vercel_decision: "vercel.ts + @vercel/config@0.5.0(已验证 npm 存在 + /v1 子路径可解析;GAN-V3 R1 已回滚)"
-  notable_fixes: ["tailwind 4.0.0→4.3.0(4.0.0 首发 scanner bug)", "@vercel/config 加入 devDeps"]
+  notable_fixes: ["tailwind 4.0.0→4.3.0(scanner bug)", "@vercel/config 加入 devDeps"]
+  pending_internal_fixes:
+    - "lib/db/index.ts import 即调 neon() 会崩(P3.3 发现)→ P4 前改懒初始化"
+    - "buildCitations persona_rule 的 source_id 来自 personas 非召回集(P3.3 发现)→ P4 接入注意"
 paused_reason: null
 paused_at_gate: null
 started_at: "2026-05-23T00:00:00+08:00"
